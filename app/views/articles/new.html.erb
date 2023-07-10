@@ -1,0 +1,16 @@
+
+<h1>Create new Article</h1>
+
+<%= form_with model: @article do |form| %>
+
+    <strong><%= form.label :title %></strong> <br><br>
+    <%= form.text_field :title %> <br><br>
+
+    <%= form.label :body %> <br><br>
+    <%= form.text_area :body %><br><br>
+
+    <%= form.number_field :user_id, value: current_user.id, hidden: true %><br><br>
+
+    <%= form.submit 'Create' %>
+
+<% end %>

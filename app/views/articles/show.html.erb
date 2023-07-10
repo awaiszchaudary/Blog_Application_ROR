@@ -1,0 +1,52 @@
+<%= content_tag(:h3, @article.title, style: "text-align: center") %>
+
+<strong>Article body:</strong>
+<%= @article.body %><br>
+<strong>Article creator:</strong>
+<%= @article.user_id %><br>
+
+<%= content_tag(:h3, "Add comments", style: "text-align: center") %>
+
+
+<%= form_with model: [@article, @article.comment.build] do |form| %>
+
+    
+    <div>
+
+        <%= form.text_area :body %><br><br>
+
+        <%= form.number_field :@article, value: current_user.id, hidden: true %><br><br> 
+
+    </div>
+   
+
+    <%= form.submit 'Comment' %><br><br>
+
+<% end %>
+
+<%= content_tag(:h3, "Comments", style: "text-align: center") %>
+
+<h1><%= @article.comment.count %></h1>
+
+<% if @article.comment.count == 0 %>
+    <p>No articles exists</p>
+<% else %>
+    <% @article.comment.each do |com| %>
+        <% if com.persisted? %>
+            <%= com.body %></strong><br>
+            <%= link_to "Delete", [com.article, com], data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %><br>
+        <%end%>
+    <% end %>
+    
+<% end %>
+
+
+<% if current_user.id == @article.user_id %>
+    <%= link_to 'Edit', edit_article_path %><br>
+    <%= link_to 'Delete', article_path(@article), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'} %><br>        
+<% end %><br>
+
+
+
+<%= link_to 'Back', articles_path %>
+
